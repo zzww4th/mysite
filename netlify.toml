@@ -23,6 +23,13 @@
   status = 200
   force = true
 
+# 根路径重定向到登录页
+[[redirects]]
+  from = "/*"
+  to = "/login.html"
+  status = 200
+  force = true
+
 # 允许直接访问静态资源
 [[redirects]]
   from = "/css/*"
