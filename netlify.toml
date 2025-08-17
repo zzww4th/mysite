@@ -1,0 +1,38 @@
+[build]
+  publish = "public"
+  functions = "functions"
+
+# 只保护/src目录下的受限制页面
+[[redirects]]
+  from = "/src/*"
+  to = "/.netlify/functions/auth"
+  status = 200
+  force = true
+
+# 保护登出功能
+[[redirects]]
+  from = "/logout"
+  to = "/.netlify/functions/auth"
+  status = 200
+  force = true
+
+# 允许直接访问登录页
+[[redirects]]
+  from = "/login.html"
+  to = "/login.html"
+  status = 200
+  force = true
+
+# 允许直接访问静态资源
+[[redirects]]
+  from = "/css/*"
+  to = "/css/:splat"
+  status = 200
+  force = true
+
+# 允许直接访问JavaScript文件
+[[redirects]]
+  from = "/js/*"
+  to = "/js/:splat"
+  status = 200
+  force = true

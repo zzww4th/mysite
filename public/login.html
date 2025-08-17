@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>请登录访问网站</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="login-container">
+    <h1>网站需要密码访问</h1>
+    <form id="loginForm">
+      <div class="password-container">
+        <input type="password" id="password" placeholder="请输入访问密码" required>
+        <button type="button" id="togglePassword" class="toggle-password">👁</button>
+      </div>
+      <button type="submit" id="loginButton">登录</button>
+    </form>
+    <p id="error" class="error"></p>
+    <p id="loading" class="loading" style="display: none;">正在验证...</p>
+  </div>
+
+  <script>
+    // 密码可见性切换
+    document.getElementById('togglePassword').addEventListener('click', () => {
+      const passwordInput = document.getElementById('password');
+      const toggleButton = document.getElementById('togglePassword');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleButton.textContent = '🔒';
+      } else {
+        passwordInput.type = 'password';
+        toggleButton.textContent = '👁';
+      }
+    });
+
+    // 登录表单提交处理
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = document.getElementById('password').value;
+      const errorEl = document.getElementById('error');
+      const loadingEl = document.getElementById('loading');
+      const loginButton = document.getElementById('loginButton');
+
+      // 清除之前的错误消息
+      errorEl.textContent = '';
+      
+      // 显示加载状态
+      loadingEl.style.display = 'block';
+      loginButton.disabled = true;
+      loginButton.textContent = '登录中...';
+
+      try {
+        const response = await fetch('/.netlify/functions/auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password }),
+          credentials: 'include'
+        });
+
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+          window.location.href = '/src/index.html';
+        } else {
+          errorEl.textContent = data.message || '登录失败，请重试';
+        }
+      } catch (err) {
+        errorEl.textContent = '网络错误，请稍后再试';
+      } finally {
+        // 隐藏加载状态
+        loadingEl.style.display = 'none';
+        loginButton.disabled = false;
+        loginButton.textContent = '登录';
+      }
+    });
+  </script>
+</body>
+</html>
