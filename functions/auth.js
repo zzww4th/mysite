@@ -104,13 +104,13 @@ const getProtectedPage = (requestedPath) => {
     const content = fs.readFileSync(fullPath, 'utf8');
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'text/html' },
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
       body: content
     };
   } catch (err) {
     return { 
       statusCode: 404, 
-      headers: { 'Content-Type': 'text/html' },
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
       body: '<h1>页面不存在</h1><p><a href="/src/index.html">返回首页</a></p>' 
     };
   }
