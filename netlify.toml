@@ -36,3 +36,9 @@
   to = "/css/:splat"
   status = 200
   force = true
+
+# 设置Content-Type头
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Content-Type = "text/html; charset=utf-8"
